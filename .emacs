@@ -350,6 +350,7 @@
 (kill-buffer "*scratch*")
 (global-set-key (kbd "<mouse-4>") 'previous-line)
 (global-set-key (kbd "<mouse-5>") 'next-line)
+(xterm-mouse-mode t)
 
 
 					;(with-eval-after-load 'lsp-mode
