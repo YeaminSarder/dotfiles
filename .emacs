@@ -366,7 +366,9 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(tsdh-dark))
  '(package-selected-packages
-   '(yasnippet-snippets bison-mode magit lsp-mode yasnippet lsp-treemacs projectile hydra flycheck company which-key dap-mode use-package))
+   '(auctex bison-mode company dap-mode flycheck hydra lsp-mode
+	    lsp-treemacs magit projectile use-package which-key
+	    yasnippet yasnippet-snippets))
  '(tab-bar-select-tab-modifiers '(meta)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -375,3 +377,12 @@
  ;; If there is more than one, they won't work right.
  )
 (setq visible-bell 1)
+
+(use-package auctex
+  :hook (LaTeX-mode . TeX-source-correlate-mode)
+  :config
+ (setq TeX-source-correlate-start-server t)
+ (setq TeX-view-program-selection
+   '((output-dvi "open") (output-pdf "displayline") (output-html "open")))
+  
+  )
