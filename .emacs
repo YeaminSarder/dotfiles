@@ -350,6 +350,8 @@
 (kill-buffer "*scratch*")
 (global-set-key (kbd "<mouse-4>") 'previous-line)
 (global-set-key (kbd "<mouse-5>") 'next-line)
+(global-set-key (kbd "<wheel-up>") 'previous-line)
+(global-set-key (kbd "<wheel-down>") 'next-line)
 (xterm-mouse-mode t)
 
 
