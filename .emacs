@@ -55,6 +55,7 @@
   (vertico-count 20) ;; Show more candidates
   (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
   (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+  (vertico-reverse-mode t)
   :init
   (vertico-mode)
   (message "loaded vertico")
