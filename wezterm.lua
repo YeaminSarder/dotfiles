@@ -1,5 +1,7 @@
 -- Pull in the wezterm API
 local wezterm = require 'wezterm'
+local keymapper = (require 'keymapper')
+local map = keymapper.map
 local act = wezterm.action
 -- This will hold the configuration.
 local config = wezterm.config_builder()
@@ -21,11 +23,11 @@ config.pane_focus_follows_mouse = true
 
 -- Show which key table is active in the status area
 wezterm.on('update-right-status', function(window, pane)
-  local name = window:active_key_table()
-  if name then
-    name = 'TABLE: ' .. name
-  end
-  window:set_right_status(name or '')
+   local name = window:active_key_table()
+   if name then
+      name = 'TABLE: ' .. name
+   end
+   window:set_right_status(name or '')
 end)
 
 
@@ -33,34 +35,40 @@ end)
 -- timeout_milliseconds defaults to 1000 and can be omitted
 config.leader = { key = 'h', mods = 'CTRL', timeout_milliseconds = 1000 }
 config.keys = {
-  { key = 'h', mods = 'LEADER|CTRL',	action = wezterm.action.SendKey { key = 'a', mods = 'CTRL' }, },
-  -- splitting
-  { key = 'f', mods = 'LEADER|ALT',	action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },},
-  { key = 'b', mods = 'LEADER|ALT',	action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },},
-  { key = 'n', mods = 'LEADER|ALT',	action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },},
-  { key = 'p', mods = 'LEADER|ALT',	action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },},
+   { key = 'h', mods = 'LEADER|CTRL', action = wezterm.action.SendKey { key = 'h', mods = 'CTRL' }, },
+   -- splitting
+   { key = 'f', mods = 'LEADER|ALT',  action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
+   { key = 'b', mods = 'LEADER|ALT',  action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
+   { key = 'n', mods = 'LEADER|ALT',  action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, },
+   { key = 'p', mods = 'LEADER|ALT',  action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
 
-  { key = 'r', mods = 'LEADER',		action = act.ActivateKeyTable { name = 'resize_pane', one_shot = false,},},
+   { key = 'r', mods = 'LEADER',      action = act.ActivateKeyTable { name = 'resize_pane', one_shot = false, }, },
 }
+
+
 
 config.key_tables = {
-  resize_pane = {
-    { key = 'LeftArrow', action = act.AdjustPaneSize { 'Left', 1 } },
-    { key = 'h', action = act.AdjustPaneSize { 'Left', 1 } },
+   resize_pane = {
+      { key = 'LeftArrow',  action = act.AdjustPaneSize { 'Left', 1 } },
+      { key = 'h',          action = act.AdjustPaneSize { 'Left', 1 } },
 
-    { key = 'RightArrow', action = act.AdjustPaneSize { 'Right', 1 } },
-    { key = 'l', action = act.AdjustPaneSize { 'Right', 1 } },
+      { key = 'RightArrow', action = act.AdjustPaneSize { 'Right', 1 } },
+      { key = 'l',          action = act.AdjustPaneSize { 'Right', 1 } },
 
-    { key = 'UpArrow', action = act.AdjustPaneSize { 'Up', 1 } },
-    { key = 'k', action = act.AdjustPaneSize { 'Up', 1 } },
+      { key = 'UpArrow',    action = act.AdjustPaneSize { 'Up', 1 } },
+      { key = 'k',          action = act.AdjustPaneSize { 'Up', 1 } },
 
-    { key = 'DownArrow', action = act.AdjustPaneSize { 'Down', 1 } },
-    { key = 'j', action = act.AdjustPaneSize { 'Down', 1 } },
+      { key = 'DownArrow',  action = act.AdjustPaneSize { 'Down', 1 } },
+      { key = 'j',          action = act.AdjustPaneSize { 'Down', 1 } },
 
-    -- Cancel the mode by pressing escape
-    { key = 'Escape', action = 'PopKeyTable' },
-  },
+      -- Cancel the mode by pressing escape
+      { key = 'Escape',     action = 'PopKeyTable' },
+   },
 }
 
+map(config, 'LEADER-r>p', act.AdjustPaneSize { 'Up', 1 })
+map(config, 'LEADER-r>n', act.AdjustPaneSize { 'Down', 1 })
+map(config, 'LEADER-r>f', act.AdjustPaneSize { 'Right', 1 })
+map(config, 'LEADER-r>b', act.AdjustPaneSize { 'Left', 1 })
 -- Finally, return the configuration to wezterm:
 return config
