@@ -43,7 +43,8 @@ function m.map_simple(config, keys, action, apply_to)
    return 0
 end
 
-function m.map(config, keys, action, apply_to)
+function m.map(config, keys, action, apply_to, k)
+   local k = k or nil
    local apply_to = apply_to or config.keys
    local seq = {}
    if type(keys) == 'string' then
@@ -64,14 +65,15 @@ function m.map(config, keys, action, apply_to)
       m.map_simple(config, seq, action, apply_to)
    elseif #seq > 1 then
       local keytab = config.key_tables or {}
-      local k = table.concat(seq[1], '-')
+      local gt = k and k .. ' > ' or ''
+      local k = gt .. table.concat(seq[1], '-')
       local keymap = keytab[k] or {}
       m.map_simple(
          config, { seq[1] },
          wezterm.action.ActivateKeyTable { name = k, one_shot = true }, apply_to
       )
       table.remove(seq, 1)
-      m.map(config, seq, action, keymap)
+      m.map(config, seq, action, keymap,k)
       keytab[k] = keymap
       config['key_tables'] = keytab
    end
