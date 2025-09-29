@@ -1,3 +1,4 @@
+ 
 local wezterm = require "wezterm"
 local inspect = require "inspect".inspect
 local m = {}
@@ -55,11 +56,11 @@ function m.map_simple(config, keys, action, apply_to)
    local pair = seq[1]
    if #pair == 1 then
       table.insert(apply_to, {
-         key = pair[1], action = action
+         key = string.gsub(pair[1], '%*', ''), action = action
       })
    elseif #pair == 2 then
       table.insert(apply_to, {
-         key = pair[2], action = action, mods = pair[1]
+         key = string.gsub(pair[2], '%*', ''), action = action, mods = pair[1]
       })
    else
       wezterm.log_error("pairs does not have 1 or 2 element (" .. inspect(pair) .. ")")
@@ -93,12 +94,14 @@ function m.map(config, keys, action, apply_to, k)
       local gt = k and k .. ' > ' or ''
       local k = gt .. table.concat(seq[1], '-')
       local keymap = keytab[k] or {}
+      local lastpair = seq[1][#seq[1]]
+      local one_shot = lastpair:sub(#lastpair, #lastpair) ~= '*'
       m.map_simple(
          config, { seq[1] },
-         wezterm.action.ActivateKeyTable { name = k, one_shot = true }, apply_to
+         wezterm.action.ActivateKeyTable { name = k, one_shot = one_shot }, apply_to
       )
       table.remove(seq, 1)
-      m.map(config, seq, action, keymap,k)
+      m.map(config, seq, action, keymap, k)
       keytab[k] = keymap
       config['key_tables'] = keytab
    end
