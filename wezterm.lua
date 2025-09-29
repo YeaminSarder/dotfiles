@@ -14,6 +14,7 @@ config.initial_rows = 28
 config.font_size = 11
 config.color_scheme = 'AdventureTime'
 
+config.pane_focus_follows_mouse = true
 
 
 
