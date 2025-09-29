@@ -10,6 +10,10 @@
 
 
 (setq debug-on-error t)
+;; for supressing error
+(defun x-hide-tip ()
+    )
+
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
@@ -21,6 +25,79 @@
 (when (cl-find-if-not #'package-installed-p package-selected-packages)
   (package-refresh-contents)
   (mapc #'package-install package-selected-packages))
+
+
+
+;; clipboard
+(defun yank-to-clipboard ()
+  "Use ANSI OSC 52 escape sequence to attempt clipboard copy"
+  ;; https://sunaku.github.io/tmux-yank-osc52.html
+  (interactive)
+  (let ((tmx_tty (concat "/dev/" (shell-command-to-string "ps -o command,tty | grep tmux | awk -F \" [ ]+\" '{print $2}'")))
+        (base64_text (base64-encode-string (encode-coding-string (substring-no-properties (nth 0 kill-ring)) 'utf-8) t)))
+    ;; Check if inside TMUX
+    (if (getenv "TMUX")
+        (shell-command
+         (format "printf \"\033]52;c;%s\a\" > %s" base64_text tmx_tty))
+      ;; Check if inside SSH
+      (if (getenv "SSH_TTY")
+          (shell-command (format "printf \"\033]52;c;%s\a\" > %s" base64_text (getenv "SSH_TTY")))
+        ;; Send to current TTY
+        (send-string-to-terminal (format "\033]52;c;%s\a" base64_text))))))
+
+(global-set-key (kbd "M-c") 'yank-to-clipboard)
+
+
+;; Custom interactive Functions
+
+
+;; Custom interactive Functions
+(defun my-increment-number-at-point (&optional increment)
+  "Increment the number at point by INCREMENT."
+  (interactive "*p")
+  (let ((pos (point)))
+    (save-match-data
+      (skip-chars-backward "0-9")
+      (if (looking-at "[0-9]+")
+          (let ((field-width (- (match-end 0) (match-beginning 0)))
+                (newval (+ (string-to-number (match-string 0) 10) increment)))
+            (when (< newval 0)
+              (setq newval (+ (expt 10 field-width) newval)))
+            (replace-match (format (concat "%0" (int-to-string field-width) "d")
+                                   newval)))
+        (user-error "No number at point")))
+    (goto-char pos)))
+
+(defun my-decrement-number-at-point (&optional decrement)
+  "Decrement the number at point by DECREMENT."
+  (interactive "*p")
+  (my-increment-number-at-point (- decrement)))
+
+(global-set-key (kbd "C-c +") 'my-increment-number-at-point)
+(global-set-key (kbd "C-c -") 'my-decrement-number-at-point)
+
+
+(defun reindent ()
+  "indent all buffer"
+  (interactive)
+  (indent-region (point-min) (point-max)))
+(global-set-key (kbd "C-c TAB") 'reindent)
+
+
+(defun shell-run-last-command ()
+  "runs last shell function in active shell buffer"
+  (interactive)
+  (with-current-buffer "*shell*"
+  (process-send-string "*shell*" (buffer-substring-no-properties 
+                     comint-last-input-start
+                     comint-last-input-end)))
+)
+
+
+(global-set-key (kbd "C-c r") 'shell-run-last-command)
+
+
+
 
 
 
@@ -52,7 +129,7 @@
 (use-package vertico
   :custom
   ;; (vertico-scroll-margin 0) ;; Different scroll margin
-  (vertico-count 20) ;; Show more candidates
+  (vertico-count 10) ;; Show more candidates
   (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
   (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
   (vertico-reverse-mode t)
@@ -306,7 +383,7 @@
   )
 
 (use-package lsp-mode
-  :hook (((c-mode c++-mode) . lsp)
+  :hook (((c-mode c++-mode python-mode lua-mode php-mode) . lsp)
 	 (lsp-mode . lsp-enable-which-key-integration)
 	 )
   
@@ -347,6 +424,12 @@
   (add-hook 'after-save-hook 'magit-after-save-refresh-status t)
   )
 
+(use-package outline-minor-mode
+  :bind (:map outline-minor-mode-map
+	      ([?\t] . outline-cycle)
+	      ("<backtab>" . outline-cycle-buffer)
+	      )
+  )
 (kill-buffer "*scratch*")
 (global-set-key (kbd "<mouse-4>") 'previous-line)
 (global-set-key (kbd "<mouse-5>") 'next-line)
@@ -364,12 +447,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes '(tsdh-dark))
- '(package-selected-packages
-   '(auctex bison-mode company dap-mode flycheck hydra lsp-mode
-	    lsp-treemacs magit projectile use-package which-key
-	    yasnippet yasnippet-snippets))
- '(tab-bar-select-tab-modifiers '(meta)))
+ '(custom-enabled-themes '(modus-vivendi))
+ '(custom-safe-themes
+   '("4f3d248f3b3a5401b42d327cc6d86edfc203365b630a5a51af859d36a0127212"
+     default))
+ '(indent-tabs-mode nil)
+ '(make-backup-files nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -386,3 +469,4 @@
    '((output-dvi "open") (output-pdf "displayline") (output-html "open")))
   
   )
+(put 'scroll-left 'disabled nil)
