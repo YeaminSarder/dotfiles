@@ -42,33 +42,16 @@ config.keys = {
    { key = 'n', mods = 'LEADER|ALT',  action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, },
    { key = 'p', mods = 'LEADER|ALT',  action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
 
-   { key = 'r', mods = 'LEADER',      action = act.ActivateKeyTable { name = 'resize_pane', one_shot = false, }, },
+   -- { key = 'r', mods = 'LEADER',      action = act.ActivateKeyTable { name = 'resize_pane', one_shot = false, }, },
 }
 
 
 
-config.key_tables = {
-   resize_pane = {
-      { key = 'LeftArrow',  action = act.AdjustPaneSize { 'Left', 1 } },
-      { key = 'h',          action = act.AdjustPaneSize { 'Left', 1 } },
 
-      { key = 'RightArrow', action = act.AdjustPaneSize { 'Right', 1 } },
-      { key = 'l',          action = act.AdjustPaneSize { 'Right', 1 } },
-
-      { key = 'UpArrow',    action = act.AdjustPaneSize { 'Up', 1 } },
-      { key = 'k',          action = act.AdjustPaneSize { 'Up', 1 } },
-
-      { key = 'DownArrow',  action = act.AdjustPaneSize { 'Down', 1 } },
-      { key = 'j',          action = act.AdjustPaneSize { 'Down', 1 } },
-
-      -- Cancel the mode by pressing escape
-      { key = 'Escape',     action = 'PopKeyTable' },
-   },
-}
-
-map(config, 'LEADER-r>p', act.AdjustPaneSize { 'Up', 1 })
-map(config, 'LEADER-r>n', act.AdjustPaneSize { 'Down', 1 })
-map(config, 'LEADER-r>f', act.AdjustPaneSize { 'Right', 1 })
-map(config, 'LEADER-r>b', act.AdjustPaneSize { 'Left', 1 })
--- Finally, return the configuration to wezterm:
+map(config, 'LEADER-r*>p', act.AdjustPaneSize { 'Up', 1 })
+map(config, 'LEADER-r*>n', act.AdjustPaneSize { 'Down', 1 })
+map(config, 'LEADER-r*>f', act.AdjustPaneSize { 'Right', 1 })
+map(config, 'LEADER-r*>b', act.AdjustPaneSize { 'Left', 1 })
+map(config, 'LEADER-r*>Escape', 'PopKeyTable')
+map(config, 'LEADER-r*>Space', 'PopKeyTable')
 return config
