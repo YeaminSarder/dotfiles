@@ -4,10 +4,8 @@ local m = {}
 m._LICENSE = [[
   MIT LICENSE
 
--- keys are something like LEADER|CTRL-h>LEADER|CTRL-p
   Copyright (c) 2025 Md. Yeamin Sarder (yeaminsardersr@gmail.com)
 
--- function m.mapraw(config, keys_table, action)
   Permission is hereby granted, free of charge, to any person obtaining a
   copy of this software and associated documentation files (the
   "Software"), to deal in the Software without restriction, including
@@ -27,6 +25,12 @@ m._LICENSE = [[
   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ]]
+
+
+-- keys are something like LEADER|CTRL-h>LEADER|CTRL-p
+-- add * to set oneshot to false
+-- like this LEADER|CTRL-r*>f will allow you to just press 'f's after pressing LEADER|CTRL-r
+
 function m.map_simple(config, keys, action, apply_to)
    local apply_to = apply_to or config.keys
    local seq = {}
