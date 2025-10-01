@@ -34,6 +34,10 @@ m._LICENSE = [[
 
 function m.map_simple(config, keys, action, apply_to)
    local apply_to = apply_to or config.keys
+   if (not apply_to) then
+      config.keys = {}
+      apply_to = config.keys
+   end
    local seq = {}
    if type(keys) == 'string' then
       local keys = string.gsub(keys, "%s", "")
@@ -72,6 +76,10 @@ end
 function m.map(config, keys, action, apply_to, k)
    local k = k or nil
    local apply_to = apply_to or config.keys
+   if (not apply_to) then
+      config.keys = {}
+      apply_to = config.keys
+   end
    local seq = {}
    if type(keys) == 'string' then
       local keys = string.gsub(keys, "%s", "")
