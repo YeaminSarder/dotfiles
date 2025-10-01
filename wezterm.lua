@@ -9,12 +9,19 @@ local config = wezterm.config_builder()
 -- This is where you actually apply your config choices.
 
 -- For example, changing the initial geometry for new windows:
-config.initial_cols = 120
-config.initial_rows = 28
+config.initial_cols = 160
+config.initial_rows = 50
 
 -- or, changing the font size and color scheme.
 config.font_size = 11
-config.color_scheme = 'AdventureTime'
+config.color_scheme = 'GitHub'--'AdventureTime'
+config.force_reverse_video_cursor = true
+
+config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = true
+config.window_background_opacity = 0.25
+config.text_background_opacity = 0.5
+config.macos_window_background_blur = 25
 
 config.pane_focus_follows_mouse = true
 
