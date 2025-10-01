@@ -61,9 +61,12 @@ map(config, 'LEADER|CTRL-f'  , wezterm.action.ActivatePaneDirection 'Right')
 map(config, 'LEADER|CTRL-b'  , wezterm.action.ActivatePaneDirection 'Left' )
 map(config, 'LEADER|CTRL-n'  , wezterm.action.ActivatePaneDirection 'Down' )
 map(config, 'LEADER|CTRL-p'  , wezterm.action.ActivatePaneDirection 'Up'   )
+
 map(config, 'LEADER|CTRL-s'  , wezterm.action.PaneSelect {alphabet = 'aoeuhtns'}  )
 map(config, 'LEADER|ALT-s'   , wezterm.action.PaneSelect { alphabet = 'aoeuhtns', mode = 'SwapWithActive' })
 map(config, 'LEADER-S'       , wezterm.action.PaneSelect {alphabet = 'aoeuhtns', mode = 'MoveToNewTab'}  )
+
+map(config, 'LEADER-z', wezterm.action.TogglePaneZoomState)
 
 map(config, 'LEADER-:', act.ActivateCommandPalette)
 
