@@ -54,11 +54,14 @@ config.keys = {
 
 
 
-
-map(config, 'LEADER-r*>p', act.AdjustPaneSize { 'Up', 1 })
-map(config, 'LEADER-r*>n', act.AdjustPaneSize { 'Down', 1 })
-map(config, 'LEADER-r*>f', act.AdjustPaneSize { 'Right', 1 })
-map(config, 'LEADER-r*>b', act.AdjustPaneSize { 'Left', 1 })
+map(config, 'LEADER-r*>p', act.AdjustPaneSize { 'Up', 4 })
+map(config, 'LEADER-r*>n', act.AdjustPaneSize { 'Down', 4 })
+map(config, 'LEADER-r*>f', act.AdjustPaneSize { 'Right', 4 })
+map(config, 'LEADER-r*>b', act.AdjustPaneSize { 'Left', 4 })
+map(config, 'LEADER-r*>CTRL-p', act.AdjustPaneSize { 'Up', 1 })
+map(config, 'LEADER-r*>CTRL-n', act.AdjustPaneSize { 'Down', 1 })
+map(config, 'LEADER-r*>CTRL-f', act.AdjustPaneSize { 'Right', 1 })
+map(config, 'LEADER-r*>CTRL-b', act.AdjustPaneSize { 'Left', 1 })
 map(config, 'LEADER-r*>Escape', 'PopKeyTable')
 map(config, 'LEADER-r*>Space', 'PopKeyTable')
 return config
