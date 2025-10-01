@@ -40,20 +40,34 @@ end)
 
 
 -- timeout_milliseconds defaults to 1000 and can be omitted
-config.leader = { key = 'h', mods = 'CTRL', timeout_milliseconds = 1000 }
-config.keys = {
-   { key = 'h', mods = 'LEADER|CTRL', action = wezterm.action.SendKey { key = 'h', mods = 'CTRL' }, },
-   -- splitting
-   { key = 'f', mods = 'LEADER|ALT',  action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
-   { key = 'b', mods = 'LEADER|ALT',  action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
-   { key = 'n', mods = 'LEADER|ALT',  action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, },
-   { key = 'p', mods = 'LEADER|ALT',  action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
+config.leader = { key = 'h', mods = 'CTRL', timeout_milliseconds = 5000 }
 
-   -- { key = 'r', mods = 'LEADER',      action = act.ActivateKeyTable { name = 'resize_pane', one_shot = false, }, },
-}
+--- panes
+-- split pane
+map(config, 'LEADER|CTRL-h' , wezterm.action.SendKey { key = 'h', mods = 'CTRL' })
+map(config, 'LEADER|ALT-f'  , wezterm.action.SplitPane{ direction = 'Right'})
+map(config, 'LEADER|ALT-b'  , wezterm.action.SplitPane{ direction = 'Left' })
+map(config, 'LEADER|ALT-n'  , wezterm.action.SplitPane{ direction = 'Down' })
+map(config, 'LEADER|ALT-p'  , wezterm.action.SplitPane{ direction = 'Up'   })
+map(config, 'LEADER|ALT-F'  , wezterm.action.SplitPane{ direction = 'Right', top_level = true })
+map(config, 'LEADER|ALT-B'  , wezterm.action.SplitPane{ direction = 'Left' , top_level = true })
+map(config, 'LEADER|ALT-N'  , wezterm.action.SplitPane{ direction = 'Down' , top_level = true })
+map(config, 'LEADER|ALT-P'  , wezterm.action.SplitPane{ direction = 'Up'   , top_level = true })
 
+map(config, 'LEADER-x'  , wezterm.action.CloseCurrentPane{ confirm = true })
 
+-- activate pane
+map(config, 'LEADER|CTRL-f'  , wezterm.action.ActivatePaneDirection 'Right')
+map(config, 'LEADER|CTRL-b'  , wezterm.action.ActivatePaneDirection 'Left' )
+map(config, 'LEADER|CTRL-n'  , wezterm.action.ActivatePaneDirection 'Down' )
+map(config, 'LEADER|CTRL-p'  , wezterm.action.ActivatePaneDirection 'Up'   )
+map(config, 'LEADER|CTRL-s'  , wezterm.action.PaneSelect {alphabet = 'aoeuhtns'}  )
+map(config, 'LEADER|ALT-s'   , wezterm.action.PaneSelect { alphabet = 'aoeuhtns', mode = 'SwapWithActive' })
+map(config, 'LEADER-S'       , wezterm.action.PaneSelect {alphabet = 'aoeuhtns', mode = 'MoveToNewTab'}  )
 
+map(config, 'LEADER-:', act.ActivateCommandPalette)
+
+-- resize pane
 map(config, 'LEADER-r*>p', act.AdjustPaneSize { 'Up', 4 })
 map(config, 'LEADER-r*>n', act.AdjustPaneSize { 'Down', 4 })
 map(config, 'LEADER-r*>f', act.AdjustPaneSize { 'Right', 4 })
@@ -64,4 +78,12 @@ map(config, 'LEADER-r*>CTRL-f', act.AdjustPaneSize { 'Right', 1 })
 map(config, 'LEADER-r*>CTRL-b', act.AdjustPaneSize { 'Left', 1 })
 map(config, 'LEADER-r*>Escape', 'PopKeyTable')
 map(config, 'LEADER-r*>Space', 'PopKeyTable')
+
+---- tabs
+map(config, 'LEADER-f', act.ActivateTabRelative(1))
+map(config, 'LEADER-b', act.ActivateTabRelative(-1))
+map(config, 'LEADER-l', act.ActivateLastTab)
+
+
+
 return config
