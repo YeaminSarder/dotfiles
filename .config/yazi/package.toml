@@ -1,0 +1,17 @@
+[[plugin.deps]]
+use = "WhoSowSee/whoosh"
+rev = "b71caff"
+hash = "8d19d6aa0b68930d8f428f3217e3539d"
+
+[[plugin.deps]]
+use = "KKv9/command"
+rev = "4762ecc"
+hash = "65fff40a0060fe4b1c42d49d29f770fd"
+
+[[plugin.deps]]
+use = "AnirudhG07/custom-shell"
+rev = "b04213d"
+hash = "3efc7ddc9bac120c618462eb994edf75"
+
+[flavor]
+deps = []
