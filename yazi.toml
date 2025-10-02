@@ -88,7 +88,10 @@ suppress_preload = false
 
 [plugin]
 fetchers = [
-	# Mimetype
+        # Git
+        { id = "git", name = "*", run = "git"},
+        { id = "git", name = "*/", run = "git"},
+        # Mimetype
 	{ id = "mime", name = "*", run = "mime", prio = "high" },
 ]
 spotters = [
