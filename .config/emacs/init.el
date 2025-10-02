@@ -468,5 +468,9 @@
  (setq TeX-view-program-selection
    '((output-dvi "open") (output-pdf "displayline") (output-html "open")))
   
-  )
+ )
+ (setq TeX-view-program-list
+   '(("displayline"
+      "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o" ;;b
+      "displayline")))
 (put 'scroll-left 'disabled nil)
