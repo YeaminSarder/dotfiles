@@ -67,8 +67,8 @@ keymap = [
 	{ on = "<A-v>",     run = "arrow -100%", desc = "Move cursor up one page" },
 	{ on = "<C-v>",   run = "arrow 100%",  desc = "Move cursor down one page" },
 
-	{ on = [ "g", "g" ], run = "arrow top", desc = "Go to top" },
-	{ on = "G",          run = "arrow bot", desc = "Go to bottom" },
+	{ on = "A-<", run = "arrow top", desc = "Go to top" },
+	{ on = "A->",          run = "arrow bot", desc = "Go to bottom" },
 
 	# Navigation
 	#{ on = "h", run = "leave", desc = "Back to the parent directory" },
@@ -157,13 +157,10 @@ keymap = [
 	{ on = [ ",", "S" ], run = [ "sort size --reverse", "linemode size" ],      desc = "Sort by size (reverse)" },
 	{ on = [ ",", "r" ], run = "sort random --reverse=no",                      desc = "Sort randomly" },
 
-	# Goto
-	{ on = [ "g", "h" ],       run = "cd ~",             desc = "Go home" },
-	{ on = [ "g", "c" ],       run = "cd ~/.config",     desc = "Go ~/.config" },
-	{ on = [ "g", "d" ],       run = "cd ~/Downloads",   desc = "Go ~/Downloads" },
-	{ on = [ "g", "<Space>" ], run = "cd --interactive", desc = "Jump interactively" },
-	{ on = [ "g", "f" ],       run = "follow",           desc = "Follow hovered symlink" },
-
+	# Git
+	{ on = [ "g", "a" ], run = ['shell --block -- git add $@','leave','enter'],              desc = "git add" },
+        { on = [ "g", "r" ], run = ['shell --block -- git restore --staged $@','leave','enter'], desc = "git restore --staged" },
+        { on = [ "<C-l>"],   run = ['leave','enter'],                                            desc = "refresh" },
 	# Tabs
 	{ on = ["t","t"], run = "tab_create --current", desc = "Tab Open" },
         #{ on = "tp", run = "tab_create --current", desc = "Create a new tab with CWD" },
