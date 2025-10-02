@@ -3,6 +3,8 @@ require("custom-shell"):setup({
     save_history = true,
 			     })
 
+require("git"):setup()
+
 local bookmarks = {
   { tag = "home", path = "~", key = { "." } },
   { tag = "config", path = "~/.config", key = { "c" } },
